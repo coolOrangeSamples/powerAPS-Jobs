@@ -26,9 +26,7 @@ The powerAPS-Jobs component handles Vault Job Processor automation that translat
 
 ## Prerequisites
 
-> **Note**: powerJobs Processor version **26.0.4** or greater is required for these workflows.
-> 
-> **Note**: powerJobs Client (aka powerEvents) version **26.0.7** or greater is required for these workflows.
+> **Note**: powerJobs Processor version **26.0.4** or greater and powerEvents version **26.0.7** or greater are required.
 
 This component requires:
 
