@@ -2,8 +2,8 @@
 
 [![Windows](https://img.shields.io/badge/Platform-Windows-lightgray.svg)](https://www.microsoft.com/en-us/windows/)
 [![PowerShell](https://img.shields.io/badge/PowerShell-5.1%20|%207.4-blue.svg)](https://microsoft.com/PowerShell/)
-[![coolOrange powerJobs](https://img.shields.io/badge/coolOrange%20powerJobs%20Processor-26.0.4+-orange.svg)](https://doc.coolorange.com/projects/powerjobsprocessor/en/stable/)
-[![coolOrange powerEvents](https://img.shields.io/badge/coolOrange%20powerEvents-26.0.7+-orange.svg)](https://doc.coolorange.com/projects/powerevents/en/stable/)
+[![coolOrange powerJobs](https://img.shields.io/badge/powerJobs%20Processor-26.0.4+-orange.svg)](https://doc.coolorange.com/projects/powerjobsprocessor/en/stable/)
+[![coolOrange powerEvents](https://img.shields.io/badge/powerJobs%20Client-26.0.7+-orange.svg)](https://doc.coolorange.com/projects/powerevents/en/stable/)
 [![Autodesk Platform Services](https://img.shields.io/badge/Autodesk%20Platform%20Services-API-blue.svg)](https://aps.autodesk.com/)
 
 ![powerAPS-Jobs](https://github.com/user-attachments/assets/2e2b8d11-5503-4d2d-bb01-2878d175c019)
@@ -210,3 +210,10 @@ Before publishing files, Vault folders must be configured with ACC project mappi
 6. **APS authentication** establishes connection using submitter credentials
 7. **Project resolution** locates target ACC project and folder structure
 8. **File upload** transfers content to ACC with metadata
+
+## Support and Documentation
+
+For additional information:
+- **COOLORANGE Documentation**: https://doc.coolorange.com
+- **powerAPS Reference**: https://doc.coolorange.com/projects/poweraps/en/stable/  
+- **APS Developer Portal**: https://aps.autodesk.com/
