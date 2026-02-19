@@ -29,7 +29,7 @@ Add-VaultMenuItem -Location FileContextMenu -Name "Publish Drawings as PDF to AC
 
     $excluded = @()
     $files = @()
-    foreach($file in $entities) {
+    foreach ($file in $entities) {
         if ( @("idw", "dwg") -notcontains $file._Extension ) {
             $excluded += $file._Name
             continue
@@ -37,7 +37,7 @@ Add-VaultMenuItem -Location FileContextMenu -Name "Publish Drawings as PDF to AC
         $files += $file
     }
 
-    foreach($file in $files) {
+    foreach ($file in $files) {
         try {
             $null = GetVaultAccProjectProperties $file._EntityPath
         }
@@ -78,7 +78,7 @@ Add-VaultMenuItem -Location FileContextMenu -Name "Publish Models as DWF to ACC"
 
     $excluded = @()
     $files = @()
-    foreach($file in $entities) {
+    foreach ($file in $entities) {
         if ( @("iam", "ipt", "dwg", "sldasm", "sldprt") -notcontains $file._Extension ) {
             $excluded += $file._Name
             continue
@@ -86,7 +86,7 @@ Add-VaultMenuItem -Location FileContextMenu -Name "Publish Models as DWF to ACC"
         $files += $file
     }
 
-    foreach($file in $files) {
+    foreach ($file in $files) {
         try {
             $null = GetVaultAccProjectProperties $file._EntityPath
         }
@@ -125,7 +125,7 @@ Add-VaultMenuItem -Location FileContextMenu -Name "Publish Native Files to ACC" 
         return
     }
 
-    foreach($file in $entities) {
+    foreach ($file in $entities) {
         try {
             $null = GetVaultAccProjectProperties $file._EntityPath
         }

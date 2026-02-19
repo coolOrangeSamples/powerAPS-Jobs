@@ -45,9 +45,7 @@ if (-not $IAmRunningInJobProcessor) {
 Write-Host "Starting job '$($job.Name)'..."
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-foreach ($module in Get-ChildItem "C:\ProgramData\coolOrange\powerAPS" -Name -Filter "*.psm1") {
-    Import-Module "C:\ProgramData\coolOrange\powerAPS\$module" -Force
-}
+Import-Module C:\ProgramData\coolOrange\powerAPS\powerAPS.Modules.psd1 -Force -Global
 
 Write-Host "Processing file $($file._FullPath)..."
 
@@ -160,10 +158,15 @@ else {
 
 #region APS Authentication
 Write-Host "APS Authentication..."
-$result = Connect-APS -User $job.SubmittedByAutodeskId 
-if(-not $result) {
-   throw ($result.Error)
+$settings = GetVaultApsAuthenticationSettings
+$arguments = @{
+    ClientId = $settings.ClientId
+    User = $job.SubmittedByAutodeskId
 }
+if (-not $settings.Pkce) {
+    $arguments.ClientSecret = $settings.ClientSecret
+}
+Connect-APS @arguments -ErrorAction Stop
 #endregion
 
 #region ACC Project and Folder Structure
@@ -171,16 +174,17 @@ $projectFolder = GetVaultAccProjectFolder $file._FolderPath
 if (-not $projectFolder) {
     throw "ACC Project folder not specified in Vault!"
 }
-$folderProperties = GetVaultAccProjectProperties $file._FolderPath
-$hub = Get-ApsAccHub $folderProperties["Hub"]
+$projectProperties = GetVaultAccProjectProperties $file._FolderPath
+$hubName = $projectProperties["Hub"]
+$hub = $ApsConnection.Hubs[$hubName].Response
 if (-not $hub) {
-    throw "ACC Hub '$($folderProperties["Hub"])' not found!"
+    throw "ACC Hub '$($projectProperties["Hub"])' not found!"
 }
-$project = Get-ApsProject -hub $hub -projectName $folderProperties["Project"]
+$project = Get-ApsProject -hub $hub -projectName $projectProperties["Project"]
 if (-not $project) {
-    throw "ACC Project '$($folderProperties["Project"])' not found!"
+    throw "ACC Project '$($projectProperties["Project"])' not found!"
 }
-$relativeAccFolder = $folderProperties["Folder"]
+$relativeAccFolder = $projectProperties["Folder"]
 $projectFilesFolder = Get-ApsProjectFilesFolder $hub $project
 if (-not $projectFilesFolder) {
     throw "ACC Project Files folder not found!"

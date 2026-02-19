@@ -27,24 +27,28 @@ if (-not $IAmRunningInJobProcessor) {
 Write-Host "Starting job '$($job.Name)'..."
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 
-foreach ($module in Get-ChildItem "C:\ProgramData\coolOrange\powerAPS" -Name -Filter "*.psm1") {
-    Import-Module "C:\ProgramData\coolOrange\powerAPS\$module" -Force
-}
+Import-Module C:\ProgramData\coolOrange\powerAPS\powerAPS.Modules.psd1 -Force -Global
 
 Write-Host "Processing file $($file._FullPath)..."
 
 #region APS Authentication
 Write-Host "APS Authentication..."
-$result = Connect-APS -User $job.SubmittedByAutodeskId 
-if(-not $result) {
-   throw ($result.Error)
+$settings = GetVaultApsAuthenticationSettings
+$arguments = @{
+    ClientId = $settings.ClientId
+    User = $job.SubmittedByAutodeskId
 }
+if (-not $settings.Pkce) {
+    $arguments.ClientSecret = $settings.ClientSecret
+}
+Connect-APS @arguments -ErrorAction Stop
 #endregion
 
 #region ACC Project and ProjectFiles Folder
 $projectFolder = GetVaultAccProjectFolder $file._FolderPath
 $projectProperties = GetVaultAccProjectProperties $file._FolderPath
-$hub = Get-ApsAccHub $projectProperties["Hub"]
+$hubName = $projectProperties["Hub"]
+$hub = $ApsConnection.Hubs[$hubName].Response
 if (-not $hub) {
     throw "ACC Hub '$($projectProperties["Hub"])' not found!"
 }
